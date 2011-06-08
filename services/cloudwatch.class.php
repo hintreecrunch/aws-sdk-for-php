@@ -47,7 +47,7 @@
  *
  * </ul>
  *
- * @version Tue May 10 18:24:54 PDT 2011
+ * @version Tue Jun 07 16:12:04 PDT 2011
  * @license See the included NOTICE.md file for complete information.
  * @copyright See the included NOTICE.md file for complete information.
  * @link http://aws.amazon.com/cloudwatch/Amazon CloudWatch
@@ -450,6 +450,54 @@ class AmazonCloudWatch extends CFRuntime
 		}
 
 		return $this->authenticate('DescribeAlarms', $opt, $this->hostname);
+	}
+
+	/**
+
+	 *
+	 * @param array $metric_data_batches (Required)  <ul>
+	 * 	<li><code>x</code> - <code>array</code> - This represents a simple array index. <ul>
+	 * 		<li><code>AccountId</code> - <code>string</code> - Required -  </li>
+	 * 		<li><code>Namespace</code> - <code>string</code> - Required -  </li>
+	 * 		<li><code>MetricData</code> - <code>array</code> - Required -  <ul>
+	 * 			<li><code>x</code> - <code>array</code> - This represents a simple array index. <ul>
+	 * 				<li><code>MetricName</code> - <code>string</code> - Required - The name of the metric. </li>
+	 * 				<li><code>Dimensions</code> - <code>array</code> - Optional - A list of dimensions associated with the metric. <ul>
+	 * 					<li><code>x</code> - <code>array</code> - This represents a simple array index. <ul>
+	 * 						<li><code>Name</code> - <code>string</code> - Required - The name of the dimension. </li>
+	 * 						<li><code>Value</code> - <code>string</code> - Required - The value representing the dimension measurement </li>
+	 * 					</ul></li>
+	 * 				</ul></li>
+	 * 				<li>
+	 * 					<li><code>Timestamp</code> - <code>string</code> - Optional - The time stamp used for the metric. If not specified, the default value is set to the time the metric data was received. May be passed as a number of seconds since UNIX Epoch, or any string compatible with <php:strtotime()>.</li></li>
+	 * 				<li><code>Value</code> - <code>double</code> - Optional - The value for the metric. <important>Although the <code>Value</code> parameter accepts numbers of type <code>Double</code>, Amazon CloudWatch truncates values with very large exponents. Values with base-10 exponents greater than 126 (1 x 10^126) are truncated. Likewise, values with base-10 exponents less than -130 (1 x 10^-130) are also truncated. </important> </li>
+	 * 				<li><code>StatisticValues</code> - <code>array</code> - Optional - A set of statistical values describing the metric. Takes an associative array of parameters that can have the following keys: <ul>
+	 * 					<li><code>SampleCount</code> - <code>double</code> - Required - The number of samples used for the statistic set. </li>
+	 * 					<li><code>Sum</code> - <code>double</code> - Required - The sum of values for the sample set. </li>
+	 * 					<li><code>Minimum</code> - <code>double</code> - Required - The minimum value of the sample set. </li>
+	 * 					<li><code>Maximum</code> - <code>double</code> - Required - The maximum value of the sample set. </li>
+	 * 				</ul></li>
+	 * 				<li><code>Unit</code> - <code>string</code> - Optional - The unit of the metric. [Allowed values: <code>Seconds</code>, <code>Microseconds</code>, <code>Milliseconds</code>, <code>Bytes</code>, <code>Kilobytes</code>, <code>Megabytes</code>, <code>Gigabytes</code>, <code>Terabytes</code>, <code>Bits</code>, <code>Kilobits</code>, <code>Megabits</code>, <code>Gigabits</code>, <code>Terabits</code>, <code>Percent</code>, <code>Count</code>, <code>Bytes/Second</code>, <code>Kilobytes/Second</code>, <code>Megabytes/Second</code>, <code>Gigabytes/Second</code>, <code>Terabytes/Second</code>, <code>Bits/Second</code>, <code>Kilobits/Second</code>, <code>Megabits/Second</code>, <code>Gigabits/Second</code>, <code>Terabits/Second</code>, <code>Count/Second</code>, <code>None</code>]</li>
+	 * 			</ul></li>
+	 * 		</ul></li>
+	 * 		<li><code>AutoDecompose</code> - <code>boolean</code> - Optional -  </li>
+	 * 	</ul></li>
+	 * </ul>
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function put_metric_data_batch($metric_data_batches, $opt = null)
+	{
+		if (!$opt) $opt = array();
+
+		// Required parameter
+		$opt = array_merge($opt, CFComplexType::map(array(
+			'MetricDataBatches' => (is_array($metric_data_batches) ? $metric_data_batches : array($metric_data_batches))
+		), 'member'));
+
+		return $this->authenticate('PutMetricDataBatch', $opt, $this->hostname);
 	}
 
 	/**

@@ -35,7 +35,7 @@
  *
  * </ul>
  *
- * @version Tue May 10 18:25:29 PDT 2011
+ * @version Tue Jun 07 16:12:30 PDT 2011
  * @license See the included NOTICE.md file for complete information.
  * @copyright See the included NOTICE.md file for complete information.
  * @link http://aws.amazon.com/elasticbeanstalk/AWS Elastic Beanstalk
@@ -428,7 +428,7 @@ class AmazonElasticBeanstalk extends CFRuntime
 	 *
 	 * Creates an application that has one configuration template named <code>default</code> and no application versions.
 	 *
-	 * The <code>default</code> configuration template is for a 32-bit version of the Amazon Linux operating system running the Tomcat 6
+	 * The <code>default</code> configuration template is for a 32-bit version of the Amazon Linux operating system running the Tomcat 7
 	 * application container.
 	 *
 	 * @param string $application_name (Required) The name of the application. Constraint: This name must be unique within your account. If the specified name already exists, the action returns an <code>InvalidParameterValue</code> error.
@@ -444,6 +444,25 @@ class AmazonElasticBeanstalk extends CFRuntime
 		$opt['ApplicationName'] = $application_name;
 
 		return $this->authenticate('CreateApplication', $opt, $this->hostname);
+	}
+
+	/**
+
+	 *
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>SourceEnvironmentId</code> - <code>string</code> - Optional -  </li>
+	 * 	<li><code>SourceEnvironmentName</code> - <code>string</code> - Optional -  </li>
+	 * 	<li><code>DestinationEnvironmentId</code> - <code>string</code> - Optional -  </li>
+	 * 	<li><code>DestinationEnvironmentName</code> - <code>string</code> - Optional -  </li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function swap_environment_c_n_a_m_es($opt = null)
+	{
+		if (!$opt) $opt = array();
+
+		return $this->authenticate('SwapEnvironmentCNAMEs', $opt, $this->hostname);
 	}
 
 	/**
@@ -816,6 +835,7 @@ class AmazonElasticBeanstalk extends CFRuntime
 	 * 	<li><code>SourceConfiguration</code> - <code>array</code> - Optional -  If specified, AWS Elastic Beanstalk uses the configuration values from the specified configuration template to create a new configuration. Values specified in the <code>OptionSettings</code> parameter of this call overrides any values obtained from the <code>SourceConfiguration</code>. If no configuration template is found, returns an <code>InvalidParameterValue</code> error. Constraint: If both the solution stack name parameter and the source configuration parameters are specified, the solution stack of the source configuration template must match the specified solution stack name or else AWS Elastic Beanstalk returns an <code>InvalidParameterCombination</code> error. <ul>
 	 * 		<li><code>ApplicationName</code> - <code>string</code> - Optional - The name of the application associated with the configuration. </li>
 	 * 		<li><code>TemplateName</code> - <code>string</code> - Optional - The name of the configuration template. </li></ul></li>
+	 * 	<li><code>EnvironmentId</code> - <code>string</code> - Optional -  </li>
 	 * 	<li><code>Description</code> - <code>string</code> - Optional - Describes this configuration. </li>
 	 * 	<li><code>OptionSettings</code> - <code>array</code> - Optional - If specified, AWS Elastic Beanstalk sets the specified configuration option to the requested value. The new value overrides the value obtained from the solution stack or the source configuration template. <ul>
 	 * 		<li><code>x</code> - <code>array</code> - This represents a simple array index. <ul>
