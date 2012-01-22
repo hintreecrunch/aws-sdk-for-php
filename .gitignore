@@ -9,3 +9,6 @@ build
 *.CVS*
 *output*
 *_coverage_report*
+_tests
+_vanity
+*~
